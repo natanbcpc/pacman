@@ -1,5 +1,3 @@
-import java.util.List;
-
 public abstract class Sprite {
     private Coordinate coordinate;
 
@@ -14,9 +12,7 @@ public abstract class Sprite {
         return coordinate;
     }
 
-    public void move(List<Coordinate> possibleCoordinates) {
-        this.coordinate = movingStrategy.move(possibleCoordinates);
+    public void move(Board board) {
+        this.coordinate = movingStrategy.move(board);
     }
-
-    public abstract boolean isWall();
 }
