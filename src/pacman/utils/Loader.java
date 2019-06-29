@@ -7,7 +7,7 @@ import pacman.models.structures.Block;
 import pacman.models.ghost.blue.BlueGhost;
 import pacman.models.ghost.Ghost;
 import pacman.models.ghost.OrangeGhost;
-import pacman.models.ghost.PinkGhost;
+import pacman.models.ghost.pink.PinkGhost;
 import pacman.models.player.Player;
 import pacman.models.ghost.RedGhost;
 import pacman.models.sprite.Sprite;

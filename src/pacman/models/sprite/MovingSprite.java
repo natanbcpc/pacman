@@ -6,6 +6,7 @@ import pacman.models.board.Board;
 import java.awt.Image;
 
 public abstract class MovingSprite extends Sprite {
+
     private Coordinate coordinate;
 
     private MovingStrategy movingStrategy;
@@ -17,7 +18,7 @@ public abstract class MovingSprite extends Sprite {
     }
 
     public void move(Board board) {
-        this.coordinate = this.movingStrategy.move(board);
+        this.coordinate = this.movingStrategy.move(board, coordinate);
     }
 
     public int getX() {
