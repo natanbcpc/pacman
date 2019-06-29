@@ -1,16 +1,23 @@
 package pacman.models.sprite;
 
 import pacman.models.Coordinate;
-import pacman.models.Movable;
+import pacman.models.board.Board;
 
 import java.awt.Image;
 
-public abstract class MovingSprite extends Sprite implements Movable {
-    Coordinate coordinate;
+public abstract class MovingSprite extends Sprite {
+    private Coordinate coordinate;
 
-    public MovingSprite(Image sprite, Coordinate coordinate) {
+    private MovingStrategy movingStrategy;
+
+    public MovingSprite(Image sprite, Coordinate coordinate, MovingStrategy movingStrategy) {
         super(sprite);
         this.coordinate = coordinate;
+        this.movingStrategy = movingStrategy;
+    }
+
+    public void move(Board board) {
+        this.coordinate = this.movingStrategy.move(board);
     }
 
     public int getX() {
@@ -27,5 +34,9 @@ public abstract class MovingSprite extends Sprite implements Movable {
 
     public void setY(int y) {
         coordinate.setY(y);
+    }
+
+    public Coordinate getCoordinate() {
+        return coordinate;
     }
 }

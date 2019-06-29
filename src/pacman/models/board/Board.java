@@ -4,7 +4,7 @@ import pacman.models.Coordinate;
 import pacman.models.ghost.Ghost;
 import pacman.models.player.Player;
 import pacman.models.sprite.Sprite;
-import pacman.utils.KeyboardAdapter;
+import pacman.utils.keyboardDirection.KeyboardAdapter;
 import pacman.utils.Loader;
 
 import javax.swing.JPanel;
@@ -18,7 +18,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Board  extends JPanel implements ActionListener {
+public class Board extends JPanel implements ActionListener {
     private final int DELAY = 300;
     private final int B_WIDTH = 336;
     private final int B_HEIGHT = 336;
@@ -32,6 +32,8 @@ public class Board  extends JPanel implements ActionListener {
     private Player player;
     private Sprite[][] field;
 
+    private KeyboardAdapter keyboardAdapter;
+
     public Board(Coordinate dimensions) {
         this.dimensions = dimensions;
         this.inGame = true;
@@ -43,9 +45,9 @@ public class Board  extends JPanel implements ActionListener {
     }
 
     private void initLevel() {
-        KeyboardAdapter k = new KeyboardAdapter();
-        k.setLevel(this);
-        addKeyListener(k);
+        keyboardAdapter = new KeyboardAdapter();
+        keyboardAdapter.setPlayer(this.player);
+        addKeyListener(keyboardAdapter);
         setBackground(Color.black);
         setFocusable(true);
         setPreferredSize(new Dimension(B_WIDTH, B_HEIGHT));
@@ -95,8 +97,14 @@ public class Board  extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent actionEvent) {
         if (inGame) {
 //            Here comes the main loop (move, check collisions, etc.)
+            player.move(this);
+
         }
 
         repaint();
+    }
+
+    public Player getPlayer() {
+        return player;
     }
 }
