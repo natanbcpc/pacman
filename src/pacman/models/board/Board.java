@@ -4,6 +4,8 @@ import pacman.models.Coordinate;
 import pacman.models.ghost.Ghost;
 import pacman.models.player.Player;
 import pacman.models.sprite.Sprite;
+import pacman.models.structures.Ball;
+import pacman.models.structures.Block;
 import pacman.utils.keyboardDirection.KeyboardAdapter;
 
 import javax.swing.JPanel;
@@ -29,16 +31,18 @@ public class Board extends JPanel implements ActionListener {
 
     private Player player;
     private List<Ghost> ghosts;
-    private List<Sprite> staticSprites;
+    private List<Block> blocks;
+    private List<Ball> balls;
 
     private KeyboardAdapter keyboardAdapter;
 
-    public Board(Coordinate dimensions, Player player, List<Ghost> ghosts, List<Sprite> staticSprites) {
+    public Board(Coordinate dimensions, Player player, List<Ghost> ghosts, List<Block> blocks, List<Ball> balls) {
         this.dimensions = dimensions;
         this.inGame = true;
         this.player = player;
         this.ghosts = new ArrayList<>(ghosts);
-        this.staticSprites = new ArrayList<>(staticSprites);
+        this.blocks = new ArrayList<>(blocks);
+        this.balls = new ArrayList<>(balls);
         initLevel();
     }
 
@@ -69,9 +73,14 @@ public class Board extends JPanel implements ActionListener {
         if (inGame) {
             int x, y;
 
-            for (Sprite sprite : staticSprites) {
-                g.drawImage(sprite.getImage(), sprite.getCoordinate().getX() * SPRITE_SIZE,
-                        sprite.getCoordinate().getY() * SPRITE_SIZE, this);
+            for (Block block : blocks) {
+                g.drawImage(block.getImage(), block.getCoordinate().getX() * SPRITE_SIZE,
+                        block.getCoordinate().getY() * SPRITE_SIZE, this);
+            }
+
+            for (Ball ball : balls) {
+                g.drawImage(ball.getImage(), ball.getCoordinate().getX() * SPRITE_SIZE,
+                        ball.getCoordinate().getY() * SPRITE_SIZE, this);
             }
 
             for (Ghost ghost : ghosts) {

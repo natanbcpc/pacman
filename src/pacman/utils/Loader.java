@@ -32,10 +32,13 @@ public class Loader {
                 cell == SpriteString.GHOST_RED.getSymbol();
     }
 
-    private static boolean isStaticSprite(char cell) {
+    private static boolean isBlock(char cell) {
+        return cell == SpriteString.BLOCK.getSymbol() ||
+                cell == SpriteString.DOOR.getSymbol();
+    }
+
+    private static boolean isBall(char cell) {
         return cell == SpriteString.BALL.getSymbol() ||
-                cell == SpriteString.BLOCK.getSymbol() ||
-                cell == SpriteString.DOOR.getSymbol() ||
                 cell == SpriteString.SPECIAL_BALL.getSymbol();
     }
 
@@ -59,7 +62,7 @@ public class Loader {
         return null;
     }
 
-    private static Sprite loadCorrectBlock(char[][] field, Coordinate coordinate) {
+    private static Block loadCorrectBlock(char[][] field, Coordinate coordinate) {
         String complement = "";
         if(coordinate.getY() - 1 >= 0 && field[coordinate.getX()][coordinate.getY() - 1] == '#') {
             complement += "u";
@@ -77,27 +80,38 @@ public class Loader {
         return new Block(ImageLoader.getWallImage(complement), coordinate);
     }
 
-    private static Sprite createStaticSprite(char[][] field, Coordinate coordinate) {
+
+    private static Block createBlock(char[][] field, Coordinate coordinate) {
         char cell = field[coordinate.getX()][coordinate.getY()];
+
         if (cell == SpriteString.BLOCK.getSymbol()) {
             return loadCorrectBlock(field, coordinate);
         }
+
         if (cell == SpriteString.DOOR.getSymbol()) {
             return new Block(ImageLoader.loadDoorImage(), coordinate);
         }
+
+        return null;
+    }
+
+    private static Ball createBall(char cell, Coordinate coordinate) {
         if (cell == SpriteString.BALL.getSymbol()) {
             return new Ball(ImageLoader.getBallImage(), coordinate, false);
         }
+
         if (cell == SpriteString.SPECIAL_BALL.getSymbol()) {
             return new Ball(ImageLoader.getSpecialBallImage(), coordinate, true);
         }
+
         return null;
     }
 
     private static Board createBoard(Coordinate size, char[][] fileMatrix) {
         Player player = null;
         List<Ghost> ghosts = new ArrayList<>();
-        List<Sprite> staticSprites = new ArrayList<>();
+        List<Block> blocks = new ArrayList<>();
+        List<Ball> balls = new ArrayList<>();
 
         for (int i = 0; i < size.getY(); i++) {
             for (int j = 0; j < size.getX(); j++) {
@@ -107,13 +121,15 @@ public class Loader {
                     player = new Player(new Coordinate(i, j));
                 } else if (isGhost(cell)) {
                     ghosts.add(createGhost(cell, new Coordinate(i, j)));
-                } else if (isStaticSprite(cell)){
-                    staticSprites.add(createStaticSprite(fileMatrix, new Coordinate(i, j)));
+                } else if (isBlock(cell)){
+                    blocks.add(createBlock(fileMatrix, new Coordinate(i, j)));
+                } else if (isBall(cell)) {
+                    balls.add(createBall(cell, new Coordinate(i, j)));
                 }
             }
         }
 
-        return new Board(size, player, ghosts, staticSprites);
+        return new Board(size, player, ghosts, blocks, balls);
     }
 
     public static Component loadBoard(Coordinate size, String file) throws FileNotFoundException {
