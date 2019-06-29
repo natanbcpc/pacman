@@ -7,7 +7,8 @@ public enum SpriteString {
     GHOST_PINK ('p'),
     GHOST_ORANGE ('o'),
     BALL ('.'),
-    SPECIAL_BALL('*');
+    SPECIAL_BALL('*'),
+    EMPTY('_');
 
 
     private final char symbol;

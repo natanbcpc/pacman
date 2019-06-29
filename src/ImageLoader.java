@@ -34,4 +34,24 @@ public class ImageLoader {
         }
         return specialBallImage;
     }
+
+    public static Image loadPacmanDefaultImage() {
+        return loadImage("src/resources/images/pacman/Pacman-o.png");
+    }
+
+    public static Image loadBlueGhostImage() {
+        return loadImage("src/resources/images/ghosts/GhostBlue.png");
+    }
+
+    public static Image loadOrangeGhostImage() {
+        return loadImage("src/resources/images/ghosts/GhostOrange.png");
+    }
+
+    public static Image loadPinkGhostImage() {
+        return loadImage("src/resources/images/ghosts/GhostPink.png");
+    }
+
+    public static Image loadRedGhostImage() {
+        return loadImage("src/resources/images/ghosts/GhostRed.png");
+    }
 }

@@ -19,15 +19,17 @@ public class Board  extends JPanel implements ActionListener {
     private Timer timer;
     private Coordinate dimensions;
 
-    private List<MovingSprite> movingSprites;
+    private List<Ghost> ghosts;
+    private Player player;
     private Sprite[][] field;
 
     public Board(Coordinate dimensions) {
         this.dimensions = dimensions;
         this.inGame = true;
         field = new Sprite[dimensions.getX()][dimensions.getY()];
-        movingSprites = new ArrayList<>();
-        Loader.initField(dimensions, field, movingSprites);
+        ghosts = new ArrayList<>();
+        player = new Player(new Coordinate(0, 0));
+        Loader.initField(dimensions, field, ghosts, player);
         initLevel();
     }
 
@@ -66,9 +68,13 @@ public class Board  extends JPanel implements ActionListener {
                 }
             }
 
-            for (MovingSprite sprite : movingSprites) {
-//                g.drawImage(sprite.getImage(), sprite.getX(), sprite.getY(),this);
+            for (Ghost ghost : ghosts) {
+                g.drawImage(ghost.getImage(),
+                        ghost.getX() * SPRITE_SIZE, ghost.getY() * SPRITE_SIZE,this);
             }
+
+            g.drawImage(player.getImage(),
+                    player.getX() * SPRITE_SIZE, player.getY() * SPRITE_SIZE, this);
 
             Toolkit.getDefaultToolkit().sync();
         } else {

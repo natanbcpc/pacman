@@ -4,12 +4,15 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Loader {
-    static void initField(Coordinate dimensions, Sprite[][] field, List<MovingSprite> movingSprites) {
+    static void initField(Coordinate dimensions, Sprite[][] field, List<Ghost> ghosts, Player player) {
         char[][] fieldMatrix = loadLevelDesign(dimensions);
         int x, y;
         for (y = 0; y < dimensions.getY(); y++) {
             for (x = 0; x < dimensions.getX(); x++) {
-                field[x][y] = identifySprite(fieldMatrix, x, y, movingSprites);
+                field[x][y] = identifySprite(fieldMatrix, x, y);
+                if (field[x][y] == null && fieldMatrix[x][y] != SpriteString.EMPTY.getSymbol()) {
+                    identifySprite(ghosts, player, fieldMatrix[x][y], new Coordinate(x, y));
+                }
             }
         }
     }
@@ -35,7 +38,7 @@ public class Loader {
         return fieldMatrix;
     }
 
-    private static Sprite identifySprite(char[][] field, int x, int y, List<MovingSprite> movingSptires) {
+    private static Sprite identifySprite(char[][] field, int x, int y) {
         char cell = field[x][y];
         if (cell == SpriteString.BLOCK.getSymbol()) {
             return loadCorrectBlock(field, x, y);
@@ -50,6 +53,21 @@ public class Loader {
             return new Ball(ImageLoader.getSpecialBallImage(), true);
         }
         return null;
+    }
+
+    private static void identifySprite(List<Ghost> ghosts, Player player, char cell, Coordinate coord) {
+        if (cell == SpriteString.PACMAN.getSymbol()) {
+            player.setX(coord.getX());
+            player.setY(coord.getY());
+        } else if (cell == SpriteString.GHOST_BLUE.getSymbol()) {
+            ghosts.add(new BlueGhost(coord));
+        } else if (cell == SpriteString.GHOST_ORANGE.getSymbol()) {
+            ghosts.add(new OrangeGhost(coord));
+        } else if (cell == SpriteString.GHOST_PINK.getSymbol()) {
+            ghosts.add(new PinkGhost(coord));
+        } else if (cell == SpriteString.GHOST_RED.getSymbol()) {
+            ghosts.add(new RedGhost(coord));
+        }
     }
 
     private static Sprite loadCorrectBlock(char[][] field, int x, int y) {
