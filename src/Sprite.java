@@ -1,22 +1,13 @@
-import java.util.List;
+import java.awt.Image;
 
 public abstract class Sprite {
-    private Coordinate coordinate;
+    protected Image defaultSprite;
 
-    private MovingStrategy movingStrategy;
-
-    public Sprite(Coordinate coordinate, MovingStrategy movingStrategy) {
-        this.coordinate = coordinate;
-        this.movingStrategy = movingStrategy;
+    public Sprite(Image sprite) {
+        this.defaultSprite = sprite;
     }
 
-    public Coordinate getCoordinate() {
-        return coordinate;
+    public Image getImage() {
+        return defaultSprite;
     }
-
-    public void move(List<Coordinate> possibleCoordinates) {
-        this.coordinate = movingStrategy.move(possibleCoordinates);
-    }
-
-    public abstract boolean isWall();
 }
