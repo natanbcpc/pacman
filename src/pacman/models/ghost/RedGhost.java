@@ -5,6 +5,6 @@ import pacman.utils.ImageLoader;
 
 public class RedGhost extends Ghost {
     public RedGhost(Coordinate coord) {
-        super(ImageLoader.loadRedGhostImage(), coord);
+        super(ImageLoader.loadRedGhostImage(), coord, null);
     }
 }

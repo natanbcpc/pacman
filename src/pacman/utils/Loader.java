@@ -4,7 +4,7 @@ import pacman.models.Coordinate;
 import pacman.models.sprite.SpriteString;
 import pacman.models.structures.Ball;
 import pacman.models.structures.Block;
-import pacman.models.ghost.BlueGhost;
+import pacman.models.ghost.blue.BlueGhost;
 import pacman.models.ghost.Ghost;
 import pacman.models.ghost.OrangeGhost;
 import pacman.models.ghost.PinkGhost;

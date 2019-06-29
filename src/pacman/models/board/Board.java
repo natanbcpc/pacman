@@ -99,6 +99,9 @@ public class Board extends JPanel implements ActionListener {
 //            Here comes the main loop (move, check collisions, etc.)
             player.move(this);
 
+            for (Ghost g: ghosts) {
+                g.move(this);
+            }
         }
 
         repaint();
@@ -106,5 +109,9 @@ public class Board extends JPanel implements ActionListener {
 
     public Player getPlayer() {
         return player;
+    }
+
+    public Coordinate getDimensions() {
+        return dimensions;
     }
 }
