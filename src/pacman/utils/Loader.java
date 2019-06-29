@@ -1,6 +1,7 @@
 package pacman.utils;
 
 import pacman.models.Coordinate;
+import pacman.models.board.Board;
 import pacman.models.sprite.SpriteString;
 import pacman.models.structures.Ball;
 import pacman.models.structures.Block;
@@ -12,93 +13,122 @@ import pacman.models.player.Player;
 import pacman.models.ghost.RedGhost;
 import pacman.models.sprite.Sprite;
 
+import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class Loader {
-    public static void initField(Coordinate dimensions, Sprite[][] field, List<Ghost> ghosts, Player player) {
-        char[][] fieldMatrix = loadLevelDesign(dimensions);
-        int x, y;
-        for (y = 0; y < dimensions.getY(); y++) {
-            for (x = 0; x < dimensions.getX(); x++) {
-                field[x][y] = identifySprite(fieldMatrix, x, y);
-                if (field[x][y] == null && fieldMatrix[x][y] != SpriteString.EMPTY.getSymbol()) {
-                    identifySprite(ghosts, player, fieldMatrix[x][y], new Coordinate(x, y));
-                }
-            }
-        }
+    private static boolean isPlayer(char cell) {
+        return cell == SpriteString.PACMAN.getSymbol();
     }
 
-    private static char[][] loadLevelDesign(Coordinate dimensions) {
-        char[][] fieldMatrix = new char[dimensions.getX()][dimensions.getY()];
-        Scanner input;
-        try {
-            input = new Scanner(new File("src/resources/levels/levelDesign01.txt"));
-            int line = 0;
-            int col;
-            while (input.hasNextLine()) {
-                String oneLine = input.nextLine();
-                for (col = 0; col < oneLine.length(); col++) {
-                    fieldMatrix[col][line] = oneLine.charAt(col);
-                }
-                line++;
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        return fieldMatrix;
+    private static boolean isGhost(char cell) {
+        return cell == SpriteString.GHOST_BLUE.getSymbol() ||
+                cell == SpriteString.GHOST_ORANGE.getSymbol() ||
+                cell == SpriteString.GHOST_PINK.getSymbol() ||
+                cell == SpriteString.GHOST_RED.getSymbol();
     }
 
-    private static Sprite identifySprite(char[][] field, int x, int y) {
-        char cell = field[x][y];
+    private static boolean isStaticSprite(char cell) {
+        return cell == SpriteString.BALL.getSymbol() ||
+                cell == SpriteString.BLOCK.getSymbol() ||
+                cell == SpriteString.DOOR.getSymbol() ||
+                cell == SpriteString.SPECIAL_BALL.getSymbol();
+    }
+
+    private static Ghost createGhost(char cell, Coordinate coordinate) {
+        if (cell == SpriteString.GHOST_BLUE.getSymbol()) {
+            return new BlueGhost(coordinate);
+        }
+
+        if (cell == SpriteString.GHOST_ORANGE.getSymbol()) {
+            return new OrangeGhost(coordinate);
+        }
+
+        if (cell == SpriteString.GHOST_PINK.getSymbol()) {
+            return new PinkGhost(coordinate);
+        }
+
+        if (cell == SpriteString.GHOST_RED.getSymbol()) {
+            return new RedGhost(coordinate);
+        }
+
+        return null;
+    }
+
+    private static Sprite loadCorrectBlock(char[][] field, Coordinate coordinate) {
+        String complement = "";
+        if(coordinate.getY() - 1 >= 0 && field[coordinate.getX()][coordinate.getY() - 1] == '#') {
+            complement += "u";
+        }
+        if(coordinate.getY() + 1 < field[0].length && field[coordinate.getX()][coordinate.getY() + 1] == '#') {
+            complement += "d";
+        }
+        if(coordinate.getX() - 1 >= 0 && field[coordinate.getX() - 1][coordinate.getY()] == '#') {
+            complement += "l";
+        }
+        if(coordinate.getX() + 1 < field.length && field[coordinate.getX() + 1][coordinate.getY()] == '#') {
+            complement += "r";
+        }
+
+        return new Block(ImageLoader.getWallImage(complement), coordinate);
+    }
+
+    private static Sprite createStaticSprite(char[][] field, Coordinate coordinate) {
+        char cell = field[coordinate.getX()][coordinate.getY()];
         if (cell == SpriteString.BLOCK.getSymbol()) {
-            return loadCorrectBlock(field, x, y);
+            return loadCorrectBlock(field, coordinate);
         }
         if (cell == SpriteString.DOOR.getSymbol()) {
-            return new Block(ImageLoader.loadDoorImage());
+            return new Block(ImageLoader.loadDoorImage(), coordinate);
         }
         if (cell == SpriteString.BALL.getSymbol()) {
-            return new Ball(ImageLoader.getBallImage(), false);
+            return new Ball(ImageLoader.getBallImage(), coordinate, false);
         }
         if (cell == SpriteString.SPECIAL_BALL.getSymbol()) {
-            return new Ball(ImageLoader.getSpecialBallImage(), true);
+            return new Ball(ImageLoader.getSpecialBallImage(), coordinate, true);
         }
         return null;
     }
 
-    private static void identifySprite(List<Ghost> ghosts, Player player, char cell, Coordinate coord) {
-        if (cell == SpriteString.PACMAN.getSymbol()) {
-            player.setX(coord.getX());
-            player.setY(coord.getY());
-        } else if (cell == SpriteString.GHOST_BLUE.getSymbol()) {
-            ghosts.add(new BlueGhost(coord));
-        } else if (cell == SpriteString.GHOST_ORANGE.getSymbol()) {
-            ghosts.add(new OrangeGhost(coord));
-        } else if (cell == SpriteString.GHOST_PINK.getSymbol()) {
-            ghosts.add(new PinkGhost(coord));
-        } else if (cell == SpriteString.GHOST_RED.getSymbol()) {
-            ghosts.add(new RedGhost(coord));
+    private static Board createBoard(Coordinate size, char[][] fileMatrix) {
+        Player player = null;
+        List<Ghost> ghosts = new ArrayList<>();
+        List<Sprite> staticSprites = new ArrayList<>();
+
+        for (int i = 0; i < size.getY(); i++) {
+            for (int j = 0; j < size.getX(); j++) {
+                char cell = fileMatrix[i][j];
+
+                if (isPlayer(cell)) {
+                    player = new Player(new Coordinate(i, j));
+                } else if (isGhost(cell)) {
+                    ghosts.add(createGhost(cell, new Coordinate(i, j)));
+                } else if (isStaticSprite(cell)){
+                    staticSprites.add(createStaticSprite(fileMatrix, new Coordinate(i, j)));
+                }
+            }
         }
+
+        return new Board(size, player, ghosts, staticSprites);
     }
 
-    private static Sprite loadCorrectBlock(char[][] field, int x, int y) {
-        String complement = "";
-        if(y - 1 >= 0 && field[x][y - 1] == '#') {
-            complement += "u";
-        }
-        if(y + 1 < field[0].length && field[x][y + 1] == '#') {
-            complement += "d";
-        }
-        if(x - 1 >= 0 && field[x - 1][y] == '#') {
-            complement += "l";
-        }
-        if(x + 1 < field.length && field[x + 1][y] == '#') {
-            complement += "r";
+    public static Component loadBoard(Coordinate size, String file) throws FileNotFoundException {
+        char[][] fileMatrix = new char[size.getX()][size.getY()];
+        Scanner input = new Scanner(new File(file));
+        int line = 0;
+        int col;
+        while (input.hasNextLine()) {
+            String oneLine = input.nextLine();
+            for (col = 0; col < oneLine.length(); col++) {
+                fileMatrix[col][line] = oneLine.charAt(col);
+            }
+            line++;
         }
 
-        return new Block(ImageLoader.getWallImage(complement));
+        return createBoard(size, fileMatrix);
     }
 }

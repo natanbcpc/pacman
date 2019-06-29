@@ -5,7 +5,6 @@ import pacman.models.ghost.Ghost;
 import pacman.models.player.Player;
 import pacman.models.sprite.Sprite;
 import pacman.utils.keyboardDirection.KeyboardAdapter;
-import pacman.utils.Loader;
 
 import javax.swing.JPanel;
 import javax.swing.Timer;
@@ -28,19 +27,18 @@ public class Board extends JPanel implements ActionListener {
     private Timer timer;
     private Coordinate dimensions;
 
-    private List<Ghost> ghosts;
     private Player player;
-    private Sprite[][] field;
+    private List<Ghost> ghosts;
+    private List<Sprite> staticSprites;
 
     private KeyboardAdapter keyboardAdapter;
 
-    public Board(Coordinate dimensions) {
+    public Board(Coordinate dimensions, Player player, List<Ghost> ghosts, List<Sprite> staticSprites) {
         this.dimensions = dimensions;
         this.inGame = true;
-        field = new Sprite[dimensions.getX()][dimensions.getY()];
-        ghosts = new ArrayList<>();
-        player = new Player(new Coordinate(0, 0));
-        Loader.initField(dimensions, field, ghosts, player);
+        this.player = player;
+        this.ghosts = new ArrayList<>(ghosts);
+        this.staticSprites = new ArrayList<>(staticSprites);
         initLevel();
     }
 
@@ -71,12 +69,9 @@ public class Board extends JPanel implements ActionListener {
         if (inGame) {
             int x, y;
 
-            for (x = 0; x < dimensions.getX(); x++) {
-                for (y = 0; y < dimensions.getY(); y++) {
-                    if (field[x][y] != null) {
-                        g.drawImage(field[x][y].getImage(), SPRITE_SIZE * x, SPRITE_SIZE * y, this);
-                    }
-                }
+            for (Sprite sprite : staticSprites) {
+                g.drawImage(sprite.getImage(), sprite.getCoordinate().getX() * SPRITE_SIZE,
+                        sprite.getCoordinate().getY() * SPRITE_SIZE, this);
             }
 
             for (Ghost ghost : ghosts) {
