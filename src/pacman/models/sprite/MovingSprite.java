@@ -1,3 +1,8 @@
+package pacman.models.sprite;
+
+import pacman.models.Coordinate;
+import pacman.models.Movable;
+
 import java.awt.Image;
 
 public abstract class MovingSprite extends Sprite implements Movable {

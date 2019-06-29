@@ -1,3 +1,5 @@
+package pacman.models.sprite;
+
 import java.awt.Image;
 
 public abstract class Sprite {

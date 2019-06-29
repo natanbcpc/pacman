@@ -1,3 +1,10 @@
+package pacman.models.player;
+
+import pacman.models.Coordinate;
+import pacman.utils.ImageLoader;
+import pacman.models.sprite.MovingSprite;
+import pacman.models.sprite.Sprite;
+
 import java.awt.Image;
 
 public class Player extends MovingSprite {

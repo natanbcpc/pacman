@@ -1,3 +1,7 @@
+package pacman.utils;
+
+import pacman.models.board.Board;
+
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 

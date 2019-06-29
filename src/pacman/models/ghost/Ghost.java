@@ -1,3 +1,9 @@
+package pacman.models.ghost;
+
+import pacman.models.Coordinate;
+import pacman.models.sprite.MovingSprite;
+import pacman.models.sprite.Sprite;
+
 import java.awt.Image;
 
 public abstract class Ghost extends MovingSprite {

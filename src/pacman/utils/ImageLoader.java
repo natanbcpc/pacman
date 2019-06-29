@@ -1,3 +1,5 @@
+package pacman.utils;
+
 import javax.swing.ImageIcon;
 import java.awt.Image;
 

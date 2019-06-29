@@ -1,3 +1,12 @@
+package pacman.models.board;
+
+import pacman.models.Coordinate;
+import pacman.models.ghost.Ghost;
+import pacman.models.player.Player;
+import pacman.models.sprite.Sprite;
+import pacman.utils.KeyboardAdapter;
+import pacman.utils.Loader;
+
 import javax.swing.JPanel;
 import javax.swing.Timer;
 import java.awt.Color;

@@ -1,3 +1,7 @@
+package pacman.models.structures;
+
+import pacman.models.sprite.Sprite;
+
 import java.awt.Image;
 
 public class Ball extends Sprite {

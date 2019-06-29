@@ -1,10 +1,24 @@
+package pacman.utils;
+
+import pacman.models.Coordinate;
+import pacman.models.sprite.SpriteString;
+import pacman.models.structures.Ball;
+import pacman.models.structures.Block;
+import pacman.models.ghost.BlueGhost;
+import pacman.models.ghost.Ghost;
+import pacman.models.ghost.OrangeGhost;
+import pacman.models.ghost.PinkGhost;
+import pacman.models.player.Player;
+import pacman.models.ghost.RedGhost;
+import pacman.models.sprite.Sprite;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.Scanner;
 
 public class Loader {
-    static void initField(Coordinate dimensions, Sprite[][] field, List<Ghost> ghosts, Player player) {
+    public static void initField(Coordinate dimensions, Sprite[][] field, List<Ghost> ghosts, Player player) {
         char[][] fieldMatrix = loadLevelDesign(dimensions);
         int x, y;
         for (y = 0; y < dimensions.getY(); y++) {

@@ -1,3 +1,5 @@
+package pacman.models.sprite;
+
 public enum SpriteString {
     BLOCK ('#'),
     DOOR ('d'),

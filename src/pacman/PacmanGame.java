@@ -1,3 +1,8 @@
+package pacman;
+
+import pacman.models.board.Board;
+import pacman.models.Coordinate;
+
 import javax.swing.JFrame;
 
 public class PacmanGame extends JFrame {

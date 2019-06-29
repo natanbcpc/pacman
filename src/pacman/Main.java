@@ -1,3 +1,5 @@
+package pacman;
+
 import javax.swing.JFrame;
 import java.awt.EventQueue;
 

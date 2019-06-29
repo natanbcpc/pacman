@@ -1,3 +1,5 @@
+package pacman.models;
+
 public class Coordinate {
     private int x;
 
