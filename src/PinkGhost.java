@@ -1,4 +1,5 @@
-package PACKAGE_NAME;
-
-public class PinkGhost {
+public class PinkGhost extends Ghost {
+    public PinkGhost(Coordinate coord) {
+        super(ImageLoader.loadPinkGhostImage(), coord);
+    }
 }
