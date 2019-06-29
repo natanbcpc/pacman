@@ -1,3 +1,3 @@
-public interface MovingStrategy {
-    Coordinate move(Board board);
+public interface Movable {
+    void move(Sprite[][] field);
 }

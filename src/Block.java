@@ -1,4 +1,7 @@
-package PACKAGE_NAME;
+import java.awt.Image;
 
-public class Block {
+public class Block extends Sprite {
+    public Block(Image sprite) {
+        super(sprite);
+    }
 }

@@ -1,4 +1,7 @@
-package PACKAGE_NAME;
+import java.awt.Image;
 
-public class MovingSprite {
+public abstract class MovingSprite extends Sprite implements Movable {
+    public MovingSprite(Image sprite, Coordinate coordinate) {
+        super(sprite);
+    }
 }

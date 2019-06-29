@@ -1,18 +1,13 @@
+import java.awt.Image;
+
 public abstract class Sprite {
-    private Coordinate coordinate;
+    private Image defaultSprite;
 
-    private MovingStrategy movingStrategy;
-
-    public Sprite(Coordinate coordinate, MovingStrategy movingStrategy) {
-        this.coordinate = coordinate;
-        this.movingStrategy = movingStrategy;
+    public Sprite(Image sprite) {
+        this.defaultSprite = sprite;
     }
 
-    public Coordinate getCoordinate() {
-        return coordinate;
-    }
-
-    public void move(Board board) {
-        this.coordinate = movingStrategy.move(board);
+    public Image getImage() {
+        return defaultSprite;
     }
 }
