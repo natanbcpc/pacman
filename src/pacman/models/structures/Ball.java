@@ -14,11 +14,6 @@ public class Ball extends Sprite {
         this.special = special;
     }
 
-    @Override
-    public boolean isBall() {
-        return true;
-    }
-
     public int getPoints() {
         if (special) {
             return 10;

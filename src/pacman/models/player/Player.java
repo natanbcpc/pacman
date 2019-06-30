@@ -32,11 +32,6 @@ public class Player extends MovingSprite {
     }
 
     @Override
-    public boolean isPlayer() {
-        return true;
-    }
-
-    @Override
     public Image getImage() {
 
         if(direction == null) {
@@ -104,5 +99,11 @@ public class Player extends MovingSprite {
 
     private void toggleMouthState() {
         isMouthOpen = !isMouthOpen;
+    }
+
+    @Override
+    public void reset(){
+        super.reset();
+        direction = null;
     }
 }

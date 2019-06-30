@@ -2,6 +2,9 @@ package pacman.models.sprite;
 
 import pacman.models.Coordinate;
 import pacman.models.board.Board;
+import pacman.models.ghost.Ghost;
+import pacman.models.player.Player;
+import pacman.models.structures.Ball;
 
 import java.awt.Image;
 
@@ -28,17 +31,21 @@ public abstract class Sprite {
         this.coordinate = coordinate;
     }
 
-    public void collide(Sprite other, Board board) {
+    public void collide(Player player, Board board) {
         if (collisionStrategy != null) {
-            collisionStrategy.collide(this, other, board);
+            collisionStrategy.collide(this, player, board);
         }
     }
 
-    public boolean isBall() {
-        return false;
+    public void collide(Ghost ghost, Board board) {
+        if (collisionStrategy != null) {
+            collisionStrategy.collide(this, ghost, board);
+        }
     }
 
-    public boolean isPlayer() {
-        return false;
+    public void collide(Ball ball, Board board) {
+        if (collisionStrategy != null) {
+            collisionStrategy.collide(this, ball, board);
+        }
     }
 }
