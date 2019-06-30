@@ -8,13 +8,16 @@ import pacman.utils.keyboardDirection.Direction;
 import java.awt.Image;
 
 public class Player extends MovingSprite {
-
+    private static final int POINTS_FOR_EXTRA_LIFE = 10000;
     private Direction direction;
     private int points;
+    private int lives;
 
     public Player(Coordinate coord) {
         super(ImageLoader.loadPacmanDefaultImage(), coord, new PlayerMovingStrategy(), new PlayerCollisionStrategy());
         this.direction = null;
+        this.points = 0;
+        this.lives = 3;
     }
 
     @Override
@@ -41,7 +44,28 @@ public class Player extends MovingSprite {
     }
 
     public void addPoints(int points) {
+        int oldPoints = this.points;
+
         this.points += points;
-        System.out.println(this.points);
+
+        if (oldPoints / POINTS_FOR_EXTRA_LIFE < this.points / POINTS_FOR_EXTRA_LIFE) {
+            addLife();
+        }
+
+        System.out.println("Points: " + this.points);
+    }
+
+    public int getLives() {
+        return lives;
+    }
+
+    public void addLife() {
+        this.lives++;
+        System.out.println("Lives: " + this.lives);
+    }
+
+    public void removeLife() {
+        this.lives--;
+        System.out.println("Lives: " + this.lives);
     }
 }
