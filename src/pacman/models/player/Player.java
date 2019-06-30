@@ -14,7 +14,7 @@ public class Player extends MovingSprite {
     private int lives;
 
     public Player(Coordinate coord) {
-        super(ImageLoader.loadPacmanDefaultImage(), coord, new PlayerMovingStrategy(), new PlayerCollisionStrategy());
+        super(ImageLoader.loadPacmanDefaultImage(), coord, new PlayerMovingStrategy(), null);
         this.direction = null;
         this.points = 0;
         this.lives = 3;

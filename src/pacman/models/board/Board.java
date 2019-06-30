@@ -137,14 +137,12 @@ public class Board extends JPanel implements ActionListener {
 
         for (Ghost ghost : ghosts) {
             if (ghost.getCoordinate().equals(playerCoordinate)) {
-                player.collide(ghost, this);
                 ghost.collide(player, this);
             }
         }
 
         for (Ball ball : balls) {
             if (ball.getCoordinate().equals(playerCoordinate)) {
-                player.collide(ball, this);
                 ball.collide(player, this);
             }
         }

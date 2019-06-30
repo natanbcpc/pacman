@@ -36,16 +36,4 @@ public abstract class Sprite {
             collisionStrategy.collide(this, player, board);
         }
     }
-
-    public void collide(Ghost ghost, Board board) {
-        if (collisionStrategy != null) {
-            collisionStrategy.collide(this, ghost, board);
-        }
-    }
-
-    public void collide(Ball ball, Board board) {
-        if (collisionStrategy != null) {
-            collisionStrategy.collide(this, ball, board);
-        }
-    }
 }
