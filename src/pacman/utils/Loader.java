@@ -77,7 +77,7 @@ public class Loader {
             complement += "r";
         }
 
-        return new Block(ImageLoader.getWallImage(complement), coordinate);
+        return new Block(ImageLoader.getWallImage(complement), coordinate, false);
     }
 
 
@@ -89,7 +89,7 @@ public class Loader {
         }
 
         if (cell == SpriteString.DOOR.getSymbol()) {
-            return new Block(ImageLoader.loadDoorImage(), coordinate);
+            return new Block(ImageLoader.loadDoorImage(), coordinate, true);
         }
 
         return null;

@@ -102,8 +102,12 @@ public class Board extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
-        if (inGame) {
-//            Here comes the main loop (move, check collisions, etc.)
+
+        //The game starts when the player moves
+        boolean gameStarted = player.getDirection() != null;
+
+        if (inGame && gameStarted) {
+            //Here comes the main loop (move, check collisions, etc.)
             player.move(this);
             checkCollisions();
 
@@ -144,6 +148,16 @@ public class Board extends JPanel implements ActionListener {
         }
 
         return false;
+    }
+
+    public boolean hasDoorOrFreePathOnCoordinate(Coordinate coordinate) {
+        for (Block b: blocks) {
+            if(b.getCoordinate().equals(coordinate)) {
+                return b.isDoor();
+            }
+        }
+
+        return true;
     }
 
     public Player getPlayer() {
