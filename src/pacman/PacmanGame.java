@@ -1,7 +1,8 @@
 package pacman;
 
 import pacman.models.Coordinate;
-import pacman.utils.Loader;
+import pacman.utils.loader.InvalidBoardException;
+import pacman.utils.loader.Loader;
 
 import javax.swing.JFrame;
 import java.io.FileNotFoundException;
@@ -15,6 +16,8 @@ public class PacmanGame extends JFrame {
         try {
             add(Loader.loadBoard(new Coordinate(21, 21), "src/resources/levels/levelDesign01.txt"));
         } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (InvalidBoardException e) {
             e.printStackTrace();
         }
 

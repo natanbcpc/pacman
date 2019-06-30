@@ -44,7 +44,6 @@ public class RedGhostMovingStrategy extends MovingStrategy {
         }
 
         int minValue = values.stream().min(Comparator.naturalOrder()).orElse(0);
-        System.out.println(minValue);
 
         if(minValue == leftDistance && !board.hasWallOnCoordinate(leftCoordinate)) {
             return leftCoordinate;

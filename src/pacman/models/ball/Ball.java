@@ -1,16 +1,18 @@
-package pacman.models.structures;
+package pacman.models.ball;
 
 import pacman.models.Coordinate;
+import pacman.models.Edible;
 import pacman.models.sprite.Sprite;
+import pacman.utils.ImageEnum;
 
 import java.awt.Image;
 import java.util.Objects;
 
-public class Ball extends Sprite {
+public class Ball extends Sprite implements Edible {
     private static final int POINTS = 1;
 
-    public Ball(Image ballImage, Coordinate coordinate) {
-        super(ballImage, coordinate, new BallCollisionStrategy());
+    public Ball(Coordinate coordinate) {
+        super(coordinate, new BallCollisionStrategy());
     }
 
     public int getPoints() {
@@ -29,5 +31,10 @@ public class Ball extends Sprite {
     public int hashCode() {
 
         return Objects.hash(coordinate);
+    }
+
+    @Override
+    public Image getImage() {
+        return ImageEnum.BALL.getImage();
     }
 }

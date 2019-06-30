@@ -7,11 +7,16 @@ import pacman.models.sprite.CollisionStrategy;
 public class GhostCollisionStrategy implements CollisionStrategy<Ghost> {
     @Override
     public void collide(Ghost self, Player player, Board board) {
-        player.removeLife();
-        if (player.getLives() <= 0) {
-            board.gameOver();
+        if (self.isScared()) {
+            self.reset();
+            player.eat(self);
         } else {
-            board.reset();
+            player.removeLife();
+            if (player.getLives() <= 0) {
+                board.gameOver();
+            } else {
+                board.reset();
+            }
         }
     }
 }

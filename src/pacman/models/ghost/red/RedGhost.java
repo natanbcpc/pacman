@@ -2,11 +2,18 @@ package pacman.models.ghost.red;
 
 import pacman.models.Coordinate;
 import pacman.models.ghost.Ghost;
-import pacman.models.ghost.blue.BlueGhostMovingStrategy;
-import pacman.utils.ImageLoader;
+import pacman.models.ghost.red.RedGhostMovingStrategy;
+import pacman.utils.ImageEnum;
+
+import java.awt.*;
 
 public class RedGhost extends Ghost {
     public RedGhost(Coordinate coord) {
-        super(ImageLoader.loadRedGhostImage(), coord, new RedGhostMovingStrategy());
+        super(coord, new RedGhostMovingStrategy());
+    }
+
+    @Override
+    protected Image getDefaultSprite() {
+        return ImageEnum.GHOST_RED.getImage();
     }
 }

@@ -2,10 +2,17 @@ package pacman.models.ghost.pink;
 
 import pacman.models.Coordinate;
 import pacman.models.ghost.Ghost;
-import pacman.utils.ImageLoader;
+import pacman.utils.ImageEnum;
+
+import java.awt.*;
 
 public class PinkGhost extends Ghost {
     public PinkGhost(Coordinate coord) {
-        super(ImageLoader.loadPinkGhostImage(), coord, new PinkGhostMovingStrategy());
+        super(coord, new PinkGhostMovingStrategy());
+    }
+
+    @Override
+    protected Image getDefaultSprite() {
+        return ImageEnum.GHOST_PINK.getImage();
     }
 }

@@ -3,9 +3,9 @@ package pacman.models.board;
 import pacman.models.Coordinate;
 import pacman.models.ghost.Ghost;
 import pacman.models.player.Player;
-import pacman.models.sprite.Sprite;
-import pacman.models.structures.Ball;
-import pacman.models.structures.Block;
+import pacman.models.ball.Ball;
+import pacman.models.block.Block;
+import pacman.utils.ImageEnum;
 import pacman.utils.keyboardDirection.KeyboardAdapter;
 
 import javax.swing.JPanel;
@@ -14,17 +14,18 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class Board extends JPanel implements ActionListener {
-    private final int DELAY = 300;
-    private final int B_WIDTH = 336;
-    private final int B_HEIGHT = 336;
-    private final int SPRITE_SIZE = 16;
+    private static final int DELAY = 200;
+    private static final int B_WIDTH = 336;
+    private static final int B_HEIGHT = 368;
+    private static final int SPRITE_SIZE = 16;
+    private static final int POWER_UP_ROUNDS = 60;
 
     private boolean inGame;
     private boolean reset;
+    private int powerUpRounds;
     private Timer timer;
     private Coordinate dimensions;
 
@@ -39,6 +40,8 @@ public class Board extends JPanel implements ActionListener {
     public Board(Coordinate dimensions, Player player, List<Ghost> ghosts, List<Block> blocks, List<Ball> balls) {
         this.dimensions = dimensions;
         this.inGame = true;
+        this.reset = false;
+        this.powerUpRounds = 0;
         this.player = player;
         this.ghosts = new ArrayList<>(ghosts);
         this.blocks = new ArrayList<>(blocks);
@@ -80,10 +83,23 @@ public class Board extends JPanel implements ActionListener {
         g.drawString(text, x, y);
     }
 
+    private void drawLives(Graphics g) {
+        g.drawImage(ImageEnum.PACMAN_RIGHT.getImage(), SPRITE_SIZE, (int) (B_HEIGHT - 1.5 * SPRITE_SIZE), this);
+        g.setColor(Color.WHITE);
+        g.drawString(Integer.toString(player.getLives()), 2 * SPRITE_SIZE, (int) (B_HEIGHT - 0.75 * SPRITE_SIZE));
+    }
+
+    private void drawPoints(Graphics g) {
+        FontMetrics fm = g.getFontMetrics();
+        String text = Integer.toString(player.getPoints());
+
+        int x = B_WIDTH - (fm.stringWidth(text) + SPRITE_SIZE);
+        int y = (int) (B_HEIGHT - 0.75 * SPRITE_SIZE);
+        g.drawString(text,x,y);
+    }
+
     private void doDrawing(Graphics g) {
         if (inGame) {
-            int x, y;
-
             for (Block block : blocks) {
                 g.drawImage(block.getImage(), block.getCoordinate().getX() * SPRITE_SIZE,
                         block.getCoordinate().getY() * SPRITE_SIZE, this);
@@ -106,6 +122,8 @@ public class Board extends JPanel implements ActionListener {
         } else {
             drawCenteredString(g, "Game Over");
         }
+        drawLives(g);
+        drawPoints(g);
     }
 
     @Override
@@ -116,6 +134,15 @@ public class Board extends JPanel implements ActionListener {
 
         if (inGame && gameStarted) {
             //Here comes the main loop (move, check collisions, etc.)
+
+            for (Ghost ghost : ghosts) {
+                if (powerUpRounds > 0) {
+                    powerUpRounds--;
+                } else {
+                    ghost.setScared(false);
+                }
+            }
+
             player.move(this);
             checkCollisions();
 
@@ -192,5 +219,12 @@ public class Board extends JPanel implements ActionListener {
 
     public void gameOver() {
         inGame = false;
+    }
+
+    public void powerUp() {
+        this.powerUpRounds = POWER_UP_ROUNDS;
+        for (Ghost ghost : ghosts) {
+            ghost.setScared(true);
+        }
     }
 }

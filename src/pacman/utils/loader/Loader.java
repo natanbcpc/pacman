@@ -1,17 +1,19 @@
-package pacman.utils;
+package pacman.utils.loader;
 
 import pacman.models.Coordinate;
+import pacman.models.block.BlockTypeEnum;
+import pacman.models.block.Door;
 import pacman.models.board.Board;
+import pacman.models.ghost.red.RedGhost;
 import pacman.models.sprite.SpriteString;
-import pacman.models.structures.Ball;
-import pacman.models.structures.Block;
+import pacman.models.ball.Ball;
+import pacman.models.block.Block;
 import pacman.models.ghost.blue.BlueGhost;
 import pacman.models.ghost.Ghost;
 import pacman.models.ghost.OrangeGhost;
 import pacman.models.ghost.pink.PinkGhost;
 import pacman.models.player.Player;
-import pacman.models.ghost.red.RedGhost;
-import pacman.models.structures.SpecialBall;
+import pacman.models.ball.special.SpecialBall;
 
 import java.awt.*;
 import java.io.File;
@@ -42,6 +44,10 @@ public class Loader {
                 cell == SpriteString.SPECIAL_BALL.getSymbol();
     }
 
+    private static boolean isEmptySpace(char cell) {
+        return cell == SpriteString.EMPTY.getSymbol();
+    }
+
     private static Ghost createGhost(char cell, Coordinate coordinate) {
         if (cell == SpriteString.GHOST_BLUE.getSymbol()) {
             return new BlueGhost(coordinate);
@@ -63,21 +69,21 @@ public class Loader {
     }
 
     private static Block loadCorrectBlock(char[][] field, Coordinate coordinate) {
-        String complement = "";
+        String complement = "WALL";
         if(coordinate.getY() - 1 >= 0 && field[coordinate.getX()][coordinate.getY() - 1] == '#') {
-            complement += "u";
+            complement += "U";
         }
         if(coordinate.getY() + 1 < field[0].length && field[coordinate.getX()][coordinate.getY() + 1] == '#') {
-            complement += "d";
+            complement += "D";
         }
         if(coordinate.getX() - 1 >= 0 && field[coordinate.getX() - 1][coordinate.getY()] == '#') {
-            complement += "l";
+            complement += "L";
         }
         if(coordinate.getX() + 1 < field.length && field[coordinate.getX() + 1][coordinate.getY()] == '#') {
-            complement += "r";
+            complement += "R";
         }
 
-        return new Block(ImageLoader.getWallImage(complement), coordinate, false);
+        return new Block(coordinate, BlockTypeEnum.valueOf(complement));
     }
 
 
@@ -89,7 +95,7 @@ public class Loader {
         }
 
         if (cell == SpriteString.DOOR.getSymbol()) {
-            return new Block(ImageLoader.loadDoorImage(), coordinate, true);
+            return new Door(coordinate);
         }
 
         return null;
@@ -97,17 +103,17 @@ public class Loader {
 
     private static Ball createBall(char cell, Coordinate coordinate) {
         if (cell == SpriteString.BALL.getSymbol()) {
-            return new Ball(ImageLoader.getBallImage(), coordinate);
+            return new Ball(coordinate);
         }
 
         if (cell == SpriteString.SPECIAL_BALL.getSymbol()) {
-            return new SpecialBall(ImageLoader.getSpecialBallImage(), coordinate);
+            return new SpecialBall(coordinate);
         }
 
         return null;
     }
 
-    private static Board createBoard(Coordinate size, char[][] fileMatrix) {
+    private static Board createBoard(Coordinate size, char[][] fileMatrix) throws InvalidBoardException {
         Player player = null;
         List<Ghost> ghosts = new ArrayList<>();
         List<Block> blocks = new ArrayList<>();
@@ -125,21 +131,36 @@ public class Loader {
                     blocks.add(createBlock(fileMatrix, new Coordinate(i, j)));
                 } else if (isBall(cell)) {
                     balls.add(createBall(cell, new Coordinate(i, j)));
+                } else if (!isEmptySpace(cell)) {
+                    throw new InvalidBoardException(String.format("Character '%c' is invalid", cell));
                 }
             }
         }
 
+        if (player == null || ghosts.isEmpty()) {
+            throw new InvalidBoardException("Board must have at least one player and one ghost");
+        }
+
         return new Board(size, player, ghosts, blocks, balls);
+
     }
 
-    public static Component loadBoard(Coordinate size, String file) throws FileNotFoundException {
+    public static Component loadBoard(Coordinate size, String file) throws FileNotFoundException, InvalidBoardException {
         char[][] fileMatrix = new char[size.getX()][size.getY()];
         Scanner input = new Scanner(new File(file));
         int line = 0;
         int col;
         while (input.hasNextLine()) {
+            if (line >= size.getY()) {
+                throw new InvalidBoardException(String.format("File is bigger than maxSize (%dx%d)", size.getX(), size.getY()));
+            }
+
             String oneLine = input.nextLine();
             for (col = 0; col < oneLine.length(); col++) {
+                if (col >= size.getX()) {
+                    throw new InvalidBoardException(String.format("File is bigger than maxSize (%dx%d)", size.getX(), size.getY()));
+                }
+
                 fileMatrix[col][line] = oneLine.charAt(col);
             }
             line++;
