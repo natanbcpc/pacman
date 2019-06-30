@@ -24,11 +24,11 @@ public class Player extends MovingSprite {
         this.direction = null;
         this.points = 0;
         this.lives = 3;
-        leftSprite = ImageLoader.loadPacmanLeftImage();
-        rightSprite = ImageLoader.loadPacmanRightImage();
-        upSprite = ImageLoader.loadPacmanUpImage();
-        downSprite = ImageLoader.loadPacmanDownImage();
-        isMouthOpen = false;
+        this.leftSprite = ImageLoader.loadPacmanLeftImage();
+        this.rightSprite = ImageLoader.loadPacmanRightImage();
+        this.upSprite = ImageLoader.loadPacmanUpImage();
+        this.downSprite = ImageLoader.loadPacmanDownImage();
+        this.isMouthOpen = false;
     }
 
     @Override
