@@ -19,6 +19,6 @@ Todo elemento que aparece no labirinto é uma extensão da classe abstrata `Spri
 
 Além disso, os elementos capazes de se moverem extendem a classe abstrata `MovingStrategy`, que possui um método `move`, que funciona como a função `collide`, descrita acima.
 
-Uma ilustração do diagrama de classes do *Strategy Pattern* pode ser vista abaixo:
+Uma ilustração do diagrama de classes do *Strategy Pattern* pode ser vista abaixo ([Fonte](https://en.wikipedia.org/wiki/File:Strategy_Pattern_in_UML.png)):
 
 ![](./images/Strategy_Pattern_in_UML.png)
