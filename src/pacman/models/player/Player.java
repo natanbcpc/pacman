@@ -21,11 +21,6 @@ public class Player extends MovingSprite {
     }
 
     @Override
-    public boolean isPlayer() {
-        return true;
-    }
-
-    @Override
     public Image getImage() {
         return this.defaultSprite;
 //        open and close mouth / face correct direction
