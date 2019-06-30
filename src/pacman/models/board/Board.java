@@ -3,9 +3,8 @@ package pacman.models.board;
 import pacman.models.Coordinate;
 import pacman.models.ghost.Ghost;
 import pacman.models.player.Player;
-import pacman.models.sprite.Sprite;
-import pacman.models.structures.Ball;
-import pacman.models.structures.Block;
+import pacman.models.ball.Ball;
+import pacman.models.block.Block;
 import pacman.utils.keyboardDirection.KeyboardAdapter;
 
 import javax.swing.JPanel;
@@ -14,7 +13,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class Board extends JPanel implements ActionListener {
@@ -82,8 +80,6 @@ public class Board extends JPanel implements ActionListener {
 
     private void doDrawing(Graphics g) {
         if (inGame) {
-            int x, y;
-
             for (Block block : blocks) {
                 g.drawImage(block.getImage(), block.getCoordinate().getX() * SPRITE_SIZE,
                         block.getCoordinate().getY() * SPRITE_SIZE, this);

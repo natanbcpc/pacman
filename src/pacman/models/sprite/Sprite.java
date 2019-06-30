@@ -2,26 +2,20 @@ package pacman.models.sprite;
 
 import pacman.models.Coordinate;
 import pacman.models.board.Board;
-import pacman.models.ghost.Ghost;
 import pacman.models.player.Player;
-import pacman.models.structures.Ball;
 
 import java.awt.Image;
 
 public abstract class Sprite {
-    protected Image defaultSprite;
     protected Coordinate coordinate;
     protected CollisionStrategy collisionStrategy;
 
-    public Sprite(Image sprite, Coordinate coordinate, CollisionStrategy collisionStrategy) {
-        this.defaultSprite = sprite;
+    public Sprite(Coordinate coordinate, CollisionStrategy collisionStrategy) {
         this.coordinate = coordinate;
         this.collisionStrategy = collisionStrategy;
     }
 
-    public Image getImage() {
-        return defaultSprite;
-    }
+    public abstract Image getImage();
 
     public Coordinate getCoordinate() {
         return coordinate;

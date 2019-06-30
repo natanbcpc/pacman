@@ -1,18 +1,19 @@
 package pacman.utils;
 
 import pacman.models.Coordinate;
+import pacman.models.block.BlockTypeEnum;
+import pacman.models.block.Door;
 import pacman.models.board.Board;
 import pacman.models.sprite.SpriteString;
-import pacman.models.structures.Ball;
-import pacman.models.structures.Block;
+import pacman.models.ball.Ball;
+import pacman.models.block.Block;
 import pacman.models.ghost.blue.BlueGhost;
 import pacman.models.ghost.Ghost;
 import pacman.models.ghost.OrangeGhost;
 import pacman.models.ghost.pink.PinkGhost;
 import pacman.models.player.Player;
 import pacman.models.ghost.RedGhost;
-import pacman.models.sprite.Sprite;
-import pacman.models.structures.SpecialBall;
+import pacman.models.ball.special.SpecialBall;
 
 import java.awt.*;
 import java.io.File;
@@ -64,21 +65,21 @@ public class Loader {
     }
 
     private static Block loadCorrectBlock(char[][] field, Coordinate coordinate) {
-        String complement = "";
+        String complement = "WALL";
         if(coordinate.getY() - 1 >= 0 && field[coordinate.getX()][coordinate.getY() - 1] == '#') {
-            complement += "u";
+            complement += "U";
         }
         if(coordinate.getY() + 1 < field[0].length && field[coordinate.getX()][coordinate.getY() + 1] == '#') {
-            complement += "d";
+            complement += "D";
         }
         if(coordinate.getX() - 1 >= 0 && field[coordinate.getX() - 1][coordinate.getY()] == '#') {
-            complement += "l";
+            complement += "L";
         }
         if(coordinate.getX() + 1 < field.length && field[coordinate.getX() + 1][coordinate.getY()] == '#') {
-            complement += "r";
+            complement += "R";
         }
 
-        return new Block(ImageLoader.getWallImage(complement), coordinate, false);
+        return new Block(coordinate, BlockTypeEnum.valueOf(complement));
     }
 
 
@@ -90,7 +91,7 @@ public class Loader {
         }
 
         if (cell == SpriteString.DOOR.getSymbol()) {
-            return new Block(ImageLoader.loadDoorImage(), coordinate, true);
+            return new Door(coordinate);
         }
 
         return null;
@@ -98,11 +99,11 @@ public class Loader {
 
     private static Ball createBall(char cell, Coordinate coordinate) {
         if (cell == SpriteString.BALL.getSymbol()) {
-            return new Ball(ImageLoader.getBallImage(), coordinate);
+            return new Ball(coordinate);
         }
 
         if (cell == SpriteString.SPECIAL_BALL.getSymbol()) {
-            return new SpecialBall(ImageLoader.getSpecialBallImage(), coordinate);
+            return new SpecialBall(coordinate);
         }
 
         return null;

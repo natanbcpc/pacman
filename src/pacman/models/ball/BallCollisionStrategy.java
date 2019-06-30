@@ -1,4 +1,4 @@
-package pacman.models.structures;
+package pacman.models.ball;
 
 import pacman.models.board.Board;
 import pacman.models.player.Player;

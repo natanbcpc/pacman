@@ -3,14 +3,12 @@ package pacman.models.sprite;
 import pacman.models.Coordinate;
 import pacman.models.board.Board;
 
-import java.awt.Image;
-
 public abstract class MovingSprite extends Sprite {
     private MovingStrategy movingStrategy;
     private Coordinate initialPosition;
 
-    public MovingSprite(Image sprite, Coordinate coordinate, MovingStrategy movingStrategy, CollisionStrategy collisionStrategy) {
-        super(sprite, coordinate, collisionStrategy);
+    public MovingSprite(Coordinate coordinate, MovingStrategy movingStrategy, CollisionStrategy collisionStrategy) {
+        super(coordinate, collisionStrategy);
         this.movingStrategy = movingStrategy;
         this.initialPosition = coordinate;
     }
