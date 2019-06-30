@@ -21,4 +21,18 @@ public abstract class MovingStrategy {
                 return currentCoordinate;
         }
     }
+
+    protected Coordinate treatIfShortcut(Coordinate newCoordinate, Board board) {
+        //Checking if the player is out from right path
+        if (newCoordinate.getX() < 0) {
+            return new Coordinate(board.getDimensions().getX(), newCoordinate.getY());
+        }
+
+        //Checking if the player is out from left path
+        if (newCoordinate.getX() > board.getDimensions().getX()) {
+            return new Coordinate(0, newCoordinate.getY());
+        }
+
+        return newCoordinate;
+    }
 }

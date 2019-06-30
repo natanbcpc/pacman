@@ -13,13 +13,14 @@ public class BlueGhostMovingStrategy extends MovingStrategy {
     @Override
     public Coordinate move(Board board, Coordinate currentCoordinate) {
         Coordinate newCoordinate = generateRandomCoordinate(currentCoordinate);
-        boolean isValidCoordinate = board.hasDoorOrFreePathOnCoordinate(newCoordinate);
+        boolean isPositionInvalid = !board.hasDoorOrFreePathOnCoordinate(newCoordinate);
 
-        while (!isValidCoordinate) {
+        while (isPositionInvalid) {
             newCoordinate = generateRandomCoordinate(currentCoordinate);
-            isValidCoordinate = board.hasDoorOrFreePathOnCoordinate(newCoordinate);
+            isPositionInvalid = !board.hasDoorOrFreePathOnCoordinate(newCoordinate);
         }
 
+        newCoordinate = treatIfShortcut(newCoordinate, board);
         return newCoordinate;
     }
 

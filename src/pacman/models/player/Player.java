@@ -28,7 +28,7 @@ public class Player extends MovingSprite {
         this.rightSprite = ImageLoader.loadPacmanRightImage();
         this.upSprite = ImageLoader.loadPacmanUpImage();
         this.downSprite = ImageLoader.loadPacmanDownImage();
-        this.isMouthOpen = false;
+        this.isMouthOpen = true;
     }
 
     @Override
