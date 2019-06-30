@@ -161,12 +161,6 @@ public class Board extends JPanel implements ActionListener {
         }
         balls.removeAll(removeBalls);
         removeBalls.clear();
-
-        if (player.getLives() <= 0) {
-            gameOver();
-        } else {
-            reset();
-        }
     }
 
     public boolean hasWallOnCoordinate(Coordinate coordinate) {
