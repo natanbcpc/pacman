@@ -10,10 +10,7 @@ import pacman.utils.keyboardDirection.KeyboardAdapter;
 
 import javax.swing.JPanel;
 import javax.swing.Timer;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Toolkit;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -73,6 +70,16 @@ public class Board extends JPanel implements ActionListener {
         doDrawing(g);
     }
 
+    private void drawCenteredString(Graphics g, String text) {
+        Graphics2D g2d = (Graphics2D)g.create();
+        FontMetrics fm = g2d.getFontMetrics();
+
+        int x = (getWidth() - fm.stringWidth(text)) / 2;
+        int y = ((getHeight() - fm.getHeight()) / 2) + fm.getAscent();
+
+        g.drawString(text, x, y);
+    }
+
     private void doDrawing(Graphics g) {
         if (inGame) {
             int x, y;
@@ -97,7 +104,7 @@ public class Board extends JPanel implements ActionListener {
 
             Toolkit.getDefaultToolkit().sync();
         } else {
-//            gameOver(g);
+            drawCenteredString(g, "Game Over");
         }
     }
 
@@ -157,5 +164,9 @@ public class Board extends JPanel implements ActionListener {
 
     public void reset() {
         reset = true;
+    }
+
+    public void gameOver() {
+        inGame = false;
     }
 }
