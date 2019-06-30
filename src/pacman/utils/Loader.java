@@ -10,8 +10,7 @@ import pacman.models.ghost.Ghost;
 import pacman.models.ghost.OrangeGhost;
 import pacman.models.ghost.pink.PinkGhost;
 import pacman.models.player.Player;
-import pacman.models.ghost.RedGhost;
-import pacman.models.sprite.Sprite;
+import pacman.models.ghost.red.RedGhost;
 
 import java.awt.*;
 import java.io.File;

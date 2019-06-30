@@ -4,6 +4,8 @@ import pacman.models.Coordinate;
 import pacman.models.board.Board;
 import pacman.utils.keyboardDirection.Direction;
 
+import java.util.ArrayList;
+
 public abstract class MovingStrategy {
     protected abstract Coordinate move(Board board, Coordinate currentCoordinate);
 
@@ -34,5 +36,13 @@ public abstract class MovingStrategy {
         }
 
         return newCoordinate;
+    }
+
+    protected int distance(Coordinate from, Coordinate to) {
+        double xDiff = to.getX() - from.getX();
+        double yDiff = to.getY() - from.getY();
+
+        double value = Math.pow(xDiff, 2) +  Math.pow(yDiff, 2);
+        return (int) Math.sqrt(value);
     }
 }
