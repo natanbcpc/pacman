@@ -10,9 +10,10 @@ import java.awt.Image;
 public class Player extends MovingSprite {
 
     private Direction direction;
+    private int points;
 
     public Player(Coordinate coord) {
-        super(ImageLoader.loadPacmanDefaultImage(), coord, new PlayerMovingStrategy());
+        super(ImageLoader.loadPacmanDefaultImage(), coord, new PlayerMovingStrategy(), new PlayerCollisionStrategy());
         this.direction = null;
     }
 
@@ -28,5 +29,14 @@ public class Player extends MovingSprite {
 
     public Direction getDirection() {
         return direction;
+    }
+
+    public int getPoints() {
+        return points;
+    }
+
+    public void addPoints(int points) {
+        this.points += points;
+        System.out.println(this.points);
     }
 }

@@ -8,8 +8,8 @@ import java.awt.Image;
 public abstract class MovingSprite extends Sprite {
     private MovingStrategy movingStrategy;
 
-    public MovingSprite(Image sprite, Coordinate coordinate, MovingStrategy movingStrategy) {
-        super(sprite, coordinate);
+    public MovingSprite(Image sprite, Coordinate coordinate, MovingStrategy movingStrategy, CollisionStrategy collisionStrategy) {
+        super(sprite, coordinate, collisionStrategy);
         this.movingStrategy = movingStrategy;
     }
 

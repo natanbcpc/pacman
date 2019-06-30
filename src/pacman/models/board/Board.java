@@ -102,13 +102,33 @@ public class Board extends JPanel implements ActionListener {
         if (inGame) {
 //            Here comes the main loop (move, check collisions, etc.)
             player.move(this);
+            checkCollisions();
 
             for (Ghost g: ghosts) {
                 g.move(this);
             }
+            checkCollisions();
         }
 
         repaint();
+    }
+
+    private void checkCollisions() {
+        Coordinate playerCoordinate = player.getCoordinate();
+
+        for (Ghost ghost : ghosts) {
+            if (ghost.getCoordinate().equals(playerCoordinate)) {
+                player.collide(ghost);
+                ghost.collide(player);
+            }
+        }
+
+        for (Ball ball : balls) {
+            if (ball.getCoordinate().equals(playerCoordinate)) {
+                player.collide(ball);
+                ball.collide(player);
+            }
+        }
     }
 
     public Player getPlayer() {
