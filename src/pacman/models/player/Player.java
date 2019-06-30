@@ -1,6 +1,7 @@
 package pacman.models.player;
 
 import pacman.models.Coordinate;
+import pacman.models.Edible;
 import pacman.utils.ImageEnum;
 import pacman.models.sprite.MovingSprite;
 import pacman.utils.keyboardDirection.Direction;
@@ -70,10 +71,10 @@ public class Player extends MovingSprite {
         return points;
     }
 
-    public void addPoints(int points) {
+    public void eat(Edible edible) {
         int oldPoints = this.points;
 
-        this.points += points;
+        this.points += edible.getPoints();
 
         if (oldPoints / POINTS_FOR_EXTRA_LIFE < this.points / POINTS_FOR_EXTRA_LIFE) {
             addLife();

@@ -11,6 +11,7 @@ public class SpecialBall extends Ball {
 
     public SpecialBall(Coordinate coordinate) {
         super(coordinate);
+        this.collisionStrategy = new SpecialBallCollisionStrategy();
     }
 
     @Override
