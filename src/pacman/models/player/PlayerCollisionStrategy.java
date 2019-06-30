@@ -13,7 +13,8 @@ public class PlayerCollisionStrategy implements CollisionStrategy<Player> {
 
     @Override
     public void collide(Player self, Ghost ghost, Board board) {
-
+        self.removeLife();
+        board.reset();
     }
 
     @Override

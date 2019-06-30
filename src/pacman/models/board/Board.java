@@ -27,6 +27,7 @@ public class Board extends JPanel implements ActionListener {
     private final int SPRITE_SIZE = 16;
 
     private boolean inGame;
+    private boolean reset;
     private Timer timer;
     private Coordinate dimensions;
 
@@ -113,6 +114,14 @@ public class Board extends JPanel implements ActionListener {
             checkCollisions();
         }
 
+        if (reset) {
+            player.reset();
+            for (Ghost ghost: ghosts) {
+                ghost.reset();
+            }
+            reset = false;
+        }
+
         repaint();
     }
 
@@ -144,5 +153,9 @@ public class Board extends JPanel implements ActionListener {
 
     public void removeBall(Ball ball) {
         removeBalls.add(ball);
+    }
+
+    public void reset() {
+        reset = true;
     }
 }

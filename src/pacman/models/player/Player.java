@@ -63,4 +63,10 @@ public class Player extends MovingSprite {
         this.lives--;
         System.out.println("Lives: " + this.lives);
     }
+
+    @Override
+    public void reset() {
+        super.reset();
+        direction = null;
+    }
 }
