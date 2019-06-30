@@ -41,6 +41,22 @@ public class ImageLoader {
         return loadImage("src/resources/images/pacman/Pacman-o.png");
     }
 
+    public static Image loadPacmanLeftImage() {
+        return loadImage("src/resources/images/pacman/Pacman-l.png");
+    }
+
+    public static Image loadPacmanRightImage() {
+        return loadImage("src/resources/images/pacman/Pacman-r.png");
+    }
+
+    public static Image loadPacmanUpImage() {
+        return loadImage("src/resources/images/pacman/Pacman-u.png");
+    }
+
+    public static Image loadPacmanDownImage() {
+        return loadImage("src/resources/images/pacman/Pacman-d.png");
+    }
+
     public static Image loadBlueGhostImage() {
         return loadImage("src/resources/images/ghosts/GhostBlue.png");
     }

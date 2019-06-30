@@ -136,6 +136,16 @@ public class Board extends JPanel implements ActionListener {
         removeBalls.clear();
     }
 
+    public boolean hasWallOnCoordinate(Coordinate coordinate) {
+        for (Block b: blocks) {
+            if(b.getCoordinate().equals(coordinate)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public Player getPlayer() {
         return player;
     }

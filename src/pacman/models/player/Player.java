@@ -13,11 +13,22 @@ public class Player extends MovingSprite {
     private int points;
     private int lives;
 
+    private Image leftSprite;
+    private Image rightSprite;
+    private Image upSprite;
+    private Image downSprite;
+    private boolean isMouthOpen;
+
     public Player(Coordinate coord) {
         super(ImageLoader.loadPacmanDefaultImage(), coord, new PlayerMovingStrategy(), new PlayerCollisionStrategy());
         this.direction = null;
         this.points = 0;
         this.lives = 3;
+        leftSprite = ImageLoader.loadPacmanLeftImage();
+        rightSprite = ImageLoader.loadPacmanRightImage();
+        upSprite = ImageLoader.loadPacmanUpImage();
+        downSprite = ImageLoader.loadPacmanDownImage();
+        isMouthOpen = false;
     }
 
     @Override
@@ -27,8 +38,30 @@ public class Player extends MovingSprite {
 
     @Override
     public Image getImage() {
-        return this.defaultSprite;
-//        open and close mouth / face correct direction
+
+        if(direction == null) {
+            return defaultSprite;
+        }
+
+        // open and close mouth / face correct direction
+        if (!isMouthOpen) {
+            toggleMouthState();
+            return defaultSprite;
+        }
+
+        toggleMouthState();
+        switch (direction) {
+            case RIGHT:
+                return this.rightSprite;
+            case LEFT:
+                return this.leftSprite;
+            case UP:
+                return this.upSprite;
+            case DOWN:
+                return this.downSprite;
+            default:
+                return defaultSprite;
+        }
     }
 
     public void setDirection(Direction direction) {
@@ -67,5 +100,9 @@ public class Player extends MovingSprite {
     public void removeLife() {
         this.lives--;
         System.out.println("Lives: " + this.lives);
+    }
+
+    private void toggleMouthState() {
+        isMouthOpen = !isMouthOpen;
     }
 }

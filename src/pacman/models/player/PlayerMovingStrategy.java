@@ -15,6 +15,11 @@ public class PlayerMovingStrategy extends MovingStrategy {
             return player.getCoordinate();
         }
 
-        return coordinateForDirection(direction, currentCoordinate);
+        Coordinate newCoordinate = coordinateForDirection(direction, currentCoordinate);
+        if (board.hasWallOnCoordinate(newCoordinate)) {
+            return player.getCoordinate();
+        }
+
+        return newCoordinate;
     }
 }
