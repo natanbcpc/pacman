@@ -10,6 +10,11 @@ public class GhostCollisionStrategy implements CollisionStrategy<Ghost> {
         if (self.isScared()) {
             self.reset();
             player.eat(self);
+            if (player.getLives() <= 0) {
+                board.gameOver();
+            } else {
+                board.reset();
+            }
         } else {
             player.removeLife();
         }
