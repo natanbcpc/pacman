@@ -1,6 +1,7 @@
 package pacman.models.sprite;
 
 import pacman.models.Coordinate;
+import pacman.models.board.Board;
 
 import java.awt.Image;
 
@@ -27,13 +28,17 @@ public abstract class Sprite {
         this.coordinate = coordinate;
     }
 
-    public void collide(Sprite other) {
+    public void collide(Sprite other, Board board) {
         if (collisionStrategy != null) {
-            collisionStrategy.collide(this, other);
+            collisionStrategy.collide(this, other, board);
         }
     }
 
     public boolean isBall() {
+        return false;
+    }
+
+    public boolean isPlayer() {
         return false;
     }
 }

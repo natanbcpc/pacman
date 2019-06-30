@@ -17,6 +17,7 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class Board extends JPanel implements ActionListener {
@@ -33,6 +34,7 @@ public class Board extends JPanel implements ActionListener {
     private List<Ghost> ghosts;
     private List<Block> blocks;
     private List<Ball> balls;
+    private List<Ball> removeBalls;
 
     private KeyboardAdapter keyboardAdapter;
 
@@ -43,6 +45,7 @@ public class Board extends JPanel implements ActionListener {
         this.ghosts = new ArrayList<>(ghosts);
         this.blocks = new ArrayList<>(blocks);
         this.balls = new ArrayList<>(balls);
+        this.removeBalls = new ArrayList<>();
         initLevel();
     }
 
@@ -118,17 +121,19 @@ public class Board extends JPanel implements ActionListener {
 
         for (Ghost ghost : ghosts) {
             if (ghost.getCoordinate().equals(playerCoordinate)) {
-                player.collide(ghost);
-                ghost.collide(player);
+                player.collide(ghost, this);
+                ghost.collide(player, this);
             }
         }
 
         for (Ball ball : balls) {
             if (ball.getCoordinate().equals(playerCoordinate)) {
-                player.collide(ball);
-                ball.collide(player);
+                player.collide(ball, this);
+                ball.collide(player, this);
             }
         }
+        balls.removeAll(removeBalls);
+        removeBalls.clear();
     }
 
     public Player getPlayer() {
@@ -137,5 +142,9 @@ public class Board extends JPanel implements ActionListener {
 
     public Coordinate getDimensions() {
         return dimensions;
+    }
+
+    public void removeBall(Ball ball) {
+        removeBalls.add(ball);
     }
 }
