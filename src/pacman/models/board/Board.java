@@ -5,6 +5,7 @@ import pacman.models.ghost.Ghost;
 import pacman.models.player.Player;
 import pacman.models.ball.Ball;
 import pacman.models.block.Block;
+import pacman.utils.ImageEnum;
 import pacman.utils.keyboardDirection.KeyboardAdapter;
 
 import javax.swing.JPanel;
@@ -16,11 +17,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Board extends JPanel implements ActionListener {
-    private static final int DELAY = 300;
+    private static final int DELAY = 200;
     private static final int B_WIDTH = 336;
-    private static final int B_HEIGHT = 336;
+    private static final int B_HEIGHT = 368;
     private static final int SPRITE_SIZE = 16;
-    private static final int POWER_UP_ROUNDS = 30;
+    private static final int POWER_UP_ROUNDS = 60;
 
     private boolean inGame;
     private boolean reset;
@@ -82,6 +83,21 @@ public class Board extends JPanel implements ActionListener {
         g.drawString(text, x, y);
     }
 
+    private void drawLives(Graphics g) {
+        g.drawImage(ImageEnum.PACMAN_RIGHT.getImage(), SPRITE_SIZE, (int) (B_HEIGHT - 1.5 * SPRITE_SIZE), this);
+        g.setColor(Color.WHITE);
+        g.drawString(Integer.toString(player.getLives()), 2 * SPRITE_SIZE, (int) (B_HEIGHT - 0.75 * SPRITE_SIZE));
+    }
+
+    private void drawPoints(Graphics g) {
+        FontMetrics fm = g.getFontMetrics();
+        String text = Integer.toString(player.getPoints());
+
+        int x = B_WIDTH - (fm.stringWidth(text) + SPRITE_SIZE);
+        int y = (int) (B_HEIGHT - 0.75 * SPRITE_SIZE);
+        g.drawString(text,x,y);
+    }
+
     private void doDrawing(Graphics g) {
         if (inGame) {
             for (Block block : blocks) {
@@ -106,6 +122,8 @@ public class Board extends JPanel implements ActionListener {
         } else {
             drawCenteredString(g, "Game Over");
         }
+        drawLives(g);
+        drawPoints(g);
     }
 
     @Override
