@@ -1,4 +1,4 @@
-package pacman.utils;
+package pacman.utils.loader;
 
 import pacman.models.Coordinate;
 import pacman.models.block.BlockTypeEnum;
@@ -42,6 +42,10 @@ public class Loader {
     private static boolean isBall(char cell) {
         return cell == SpriteString.BALL.getSymbol() ||
                 cell == SpriteString.SPECIAL_BALL.getSymbol();
+    }
+
+    private static boolean isEmptySpace(char cell) {
+        return cell == SpriteString.EMPTY.getSymbol();
     }
 
     private static Ghost createGhost(char cell, Coordinate coordinate) {
@@ -109,7 +113,7 @@ public class Loader {
         return null;
     }
 
-    private static Board createBoard(Coordinate size, char[][] fileMatrix) {
+    private static Board createBoard(Coordinate size, char[][] fileMatrix) throws InvalidBoardException {
         Player player = null;
         List<Ghost> ghosts = new ArrayList<>();
         List<Block> blocks = new ArrayList<>();
@@ -127,21 +131,36 @@ public class Loader {
                     blocks.add(createBlock(fileMatrix, new Coordinate(i, j)));
                 } else if (isBall(cell)) {
                     balls.add(createBall(cell, new Coordinate(i, j)));
+                } else if (!isEmptySpace(cell)) {
+                    throw new InvalidBoardException(String.format("Character '%c' is invalid", cell));
                 }
             }
         }
 
+        if (player == null || ghosts.isEmpty()) {
+            throw new InvalidBoardException("Board must have at least one player and one ghost");
+        }
+
         return new Board(size, player, ghosts, blocks, balls);
+
     }
 
-    public static Component loadBoard(Coordinate size, String file) throws FileNotFoundException {
+    public static Component loadBoard(Coordinate size, String file) throws FileNotFoundException, InvalidBoardException {
         char[][] fileMatrix = new char[size.getX()][size.getY()];
         Scanner input = new Scanner(new File(file));
         int line = 0;
         int col;
         while (input.hasNextLine()) {
+            if (line >= size.getY()) {
+                throw new InvalidBoardException(String.format("File is bigger than maxSize (%dx%d)", size.getX(), size.getY()));
+            }
+
             String oneLine = input.nextLine();
             for (col = 0; col < oneLine.length(); col++) {
+                if (col >= size.getX()) {
+                    throw new InvalidBoardException(String.format("File is bigger than maxSize (%dx%d)", size.getX(), size.getY()));
+                }
+
                 fileMatrix[col][line] = oneLine.charAt(col);
             }
             line++;
