@@ -24,7 +24,6 @@ public class PlayerCollisionStrategy implements CollisionStrategy<Player> {
     @Override
     public void collide(Player self, Ball ball, Board board) {
         self.addPoints(ball.getPoints());
-        ball.collide(self, board);
     }
 }
 

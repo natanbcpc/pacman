@@ -71,12 +71,12 @@ public class Board extends JPanel implements ActionListener {
     }
 
     private void drawCenteredString(Graphics g, String text) {
-        Graphics2D g2d = (Graphics2D)g.create();
-        FontMetrics fm = g2d.getFontMetrics();
+        FontMetrics fm = g.getFontMetrics();
 
         int x = (getWidth() - fm.stringWidth(text)) / 2;
         int y = ((getHeight() - fm.getHeight()) / 2) + fm.getAscent();
 
+        g.setColor(Color.WHITE);
         g.drawString(text, x, y);
     }
 
@@ -138,12 +138,14 @@ public class Board extends JPanel implements ActionListener {
         for (Ghost ghost : ghosts) {
             if (ghost.getCoordinate().equals(playerCoordinate)) {
                 player.collide(ghost, this);
+                ghost.collide(player, this);
             }
         }
 
         for (Ball ball : balls) {
             if (ball.getCoordinate().equals(playerCoordinate)) {
                 player.collide(ball, this);
+                ball.collide(player, this);
             }
         }
         balls.removeAll(removeBalls);
