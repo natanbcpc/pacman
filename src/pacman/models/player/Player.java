@@ -79,8 +79,6 @@ public class Player extends MovingSprite {
         if (oldPoints / POINTS_FOR_EXTRA_LIFE < this.points / POINTS_FOR_EXTRA_LIFE) {
             addLife();
         }
-
-        System.out.println("Points: " + this.points);
     }
 
     public int getLives() {
@@ -89,12 +87,10 @@ public class Player extends MovingSprite {
 
     public void addLife() {
         this.lives++;
-        System.out.println("Lives: " + this.lives);
     }
 
     public void removeLife() {
         this.lives--;
-        System.out.println("Lives: " + this.lives);
     }
 
     private void toggleMouthState() {
