@@ -7,19 +7,14 @@ import java.awt.Image;
 import java.util.Objects;
 
 public class Ball extends Sprite {
-    private boolean special;
+    private static final int POINTS = 1;
 
-    public Ball(Image ballImage, Coordinate coordinate, boolean special) {
+    public Ball(Image ballImage, Coordinate coordinate) {
         super(ballImage, coordinate, new BallCollisionStrategy());
-        this.special = special;
     }
 
     public int getPoints() {
-        if (special) {
-            return 10;
-        }
-
-        return 1;
+        return POINTS;
     }
 
     @Override

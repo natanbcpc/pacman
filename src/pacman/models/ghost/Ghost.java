@@ -10,7 +10,7 @@ public abstract class Ghost extends MovingSprite {
     protected boolean scared;
 
     public Ghost(Image sprite, Coordinate coordinate, MovingStrategy movingStrategy) {
-        super(sprite, coordinate, movingStrategy, null);
+        super(sprite, coordinate, movingStrategy, new GhostCollisionStrategy());
         scared = false;
     }
 

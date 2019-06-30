@@ -12,6 +12,7 @@ import pacman.models.ghost.pink.PinkGhost;
 import pacman.models.player.Player;
 import pacman.models.ghost.RedGhost;
 import pacman.models.sprite.Sprite;
+import pacman.models.structures.SpecialBall;
 
 import java.awt.*;
 import java.io.File;
@@ -97,11 +98,11 @@ public class Loader {
 
     private static Ball createBall(char cell, Coordinate coordinate) {
         if (cell == SpriteString.BALL.getSymbol()) {
-            return new Ball(ImageLoader.getBallImage(), coordinate, false);
+            return new Ball(ImageLoader.getBallImage(), coordinate);
         }
 
         if (cell == SpriteString.SPECIAL_BALL.getSymbol()) {
-            return new Ball(ImageLoader.getSpecialBallImage(), coordinate, true);
+            return new SpecialBall(ImageLoader.getSpecialBallImage(), coordinate);
         }
 
         return null;
