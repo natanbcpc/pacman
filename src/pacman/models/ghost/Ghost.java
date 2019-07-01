@@ -36,6 +36,8 @@ public abstract class Ghost extends MovingSprite implements Edible {
         return getDefaultSprite();
     }
 
+    public abstract GhostType getGhostType();
+
     public boolean isScared() {
         return scared;
     }

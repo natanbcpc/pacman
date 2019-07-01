@@ -4,15 +4,15 @@ import pacman.models.Coordinate;
 import pacman.models.block.BlockTypeEnum;
 import pacman.models.block.Door;
 import pacman.models.board.Board;
+import pacman.models.ghost.red.RedGhost;
 import pacman.models.sprite.SpriteString;
 import pacman.models.ball.Ball;
 import pacman.models.block.Block;
 import pacman.models.ghost.blue.BlueGhost;
 import pacman.models.ghost.Ghost;
-import pacman.models.ghost.OrangeGhost;
+import pacman.models.ghost.orange.OrangeGhost;
 import pacman.models.ghost.pink.PinkGhost;
 import pacman.models.player.Player;
-import pacman.models.ghost.RedGhost;
 import pacman.models.ball.special.SpecialBall;
 
 import java.awt.*;
