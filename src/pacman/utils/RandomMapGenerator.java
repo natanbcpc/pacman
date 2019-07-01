@@ -3,6 +3,8 @@ package pacman.utils;
 import pacman.models.Coordinate;
 import pacman.models.sprite.SpriteString;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 public class RandomMapGenerator {
     private static int centerX, centerY;
 
@@ -13,8 +15,58 @@ public class RandomMapGenerator {
         char[][] field = new char[dimensions.getX()][dimensions.getY()];
 
         fillDefaultParts(field, dimensions);
+        fillRandomParts(field, dimensions);
 
         return field;
+    }
+
+    private static void fillRandomParts(char[][] field, Coordinate dimensions) {
+        int x, y;
+
+        for (y = 1; y < dimensions.getY() - 1; y++) {
+            for (x = 2; x < dimensions.getX() - 2; x++) {
+                if (field[x][y] == 0) {
+                    randomizeCell(field, x, y);
+                }
+            }
+        }
+    }
+
+    private static void randomizeCell(char[][] field, int x, int y) {
+        int randomValue = ThreadLocalRandom.current().nextInt(0, 4);
+        if (randomValue == 0) {
+            field[x][y] = SpriteString.BLOCK.getSymbol();
+            if (!canBeABlock(field, x, y)) {
+                field[x][y] = generateBall(x, y);
+            }
+        } else {
+            field[x][y] = generateBall(x, y);
+        }
+    }
+
+    private static boolean canBeABlock(char[][] field, int x, int y) {
+        // Os quadrados em volta, ou são blocos, ou são acessíveis
+        return ((field[x][y + 1] == SpriteString.BLOCK.getSymbol() || isAcessible(field, x, y + 1))
+             && (field[x][y - 1] == SpriteString.BLOCK.getSymbol() || isAcessible(field, x, y - 1))
+             && (field[x + 1][y] == SpriteString.BLOCK.getSymbol() || isAcessible(field, x + 1, y))
+             && (field[x - 1][y] == SpriteString.BLOCK.getSymbol() || isAcessible(field, x - 1, y)));
+    }
+
+    private static boolean isAcessible(char[][] field, int x, int y) {
+        // Ao menos um quadrado em volta não é bloco (nem porta)
+        return ((field[x][y - 1] != SpriteString.BLOCK.getSymbol() && field[x][y - 1] != SpriteString.DOOR.getSymbol())
+             || (field[x][y + 1] != SpriteString.BLOCK.getSymbol() && field[x][y + 1] != SpriteString.DOOR.getSymbol())
+             || (field[x - 1][y] != SpriteString.BLOCK.getSymbol() && field[x - 1][y] != SpriteString.DOOR.getSymbol())
+             || (field[x + 1][y] != SpriteString.BLOCK.getSymbol() && field[x + 1][y] != SpriteString.DOOR.getSymbol()));
+    }
+
+    private static char generateBall(int x, int y) {
+        int randomValue = ThreadLocalRandom.current().nextInt(0, 10);
+        if (randomValue == 0) {
+            return SpriteString.SPECIAL_BALL.getSymbol();
+        } else {
+            return SpriteString.BALL.getSymbol();
+        }
     }
 
     private static void fillDefaultParts(char[][] field, Coordinate dimensions) {
