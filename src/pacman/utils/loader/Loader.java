@@ -141,6 +141,10 @@ public class Loader {
             throw new InvalidBoardException("Board must have at least one player and one ghost");
         }
 
+        if (balls.isEmpty()) {
+            throw new InvalidBoardException("Board must have at least one ball");
+        }
+
         return new Board(size, player, ghosts, blocks, balls);
 
     }
