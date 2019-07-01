@@ -1,5 +1,6 @@
 package pacman.utils.loader;
 
+import pacman.LevelEnum;
 import pacman.models.Coordinate;
 import pacman.models.block.BlockTypeEnum;
 import pacman.models.block.Door;
@@ -113,14 +114,14 @@ public class Loader {
         return null;
     }
 
-    private static Board createBoard(Coordinate size, char[][] fileMatrix) throws InvalidBoardException {
+    private static Board createBoard(LevelEnum level, char[][] fileMatrix) throws InvalidBoardException {
         Player player = null;
         List<Ghost> ghosts = new ArrayList<>();
         List<Block> blocks = new ArrayList<>();
         List<Ball> balls = new ArrayList<>();
 
-        for (int i = 0; i < size.getY(); i++) {
-            for (int j = 0; j < size.getX(); j++) {
+        for (int i = 0; i < level.getSize().getY(); i++) {
+            for (int j = 0; j < level.getSize().getX(); j++) {
                 char cell = fileMatrix[i][j];
 
                 if (isPlayer(cell)) {
@@ -145,24 +146,29 @@ public class Loader {
             throw new InvalidBoardException("Board must have at least one ball");
         }
 
-        return new Board(size, player, ghosts, blocks, balls);
-
+        return new Board(level, player, ghosts, blocks, balls);
     }
 
-    public static Component loadBoard(Coordinate size, String file) throws FileNotFoundException, InvalidBoardException {
-        char[][] fileMatrix = new char[size.getX()][size.getY()];
-        Scanner input = new Scanner(new File(file));
+    private static Board createBoard(LevelEnum level, char[][] fileMatrix, Player player) throws InvalidBoardException {
+        Board board = createBoard(level, fileMatrix);
+        board.setPlayer(new Player(player, board.getPlayer().getCoordinate()));
+        return board;
+    }
+
+    private static char[][] readFileMatrix(LevelEnum level) throws InvalidBoardException, FileNotFoundException {
+        char[][] fileMatrix = new char[level.getSize().getX()][level.getSize().getY()];
+        Scanner input = new Scanner(new File(level.getPath()));
         int line = 0;
         int col;
         while (input.hasNextLine()) {
-            if (line >= size.getY()) {
-                throw new InvalidBoardException(String.format("File is bigger than maxSize (%dx%d)", size.getX(), size.getY()));
+            if (line >= level.getSize().getY()) {
+                throw new InvalidBoardException(String.format("File is bigger than maxSize (%dx%d)", level.getSize().getX(), level.getSize().getY()));
             }
 
             String oneLine = input.nextLine();
             for (col = 0; col < oneLine.length(); col++) {
-                if (col >= size.getX()) {
-                    throw new InvalidBoardException(String.format("File is bigger than maxSize (%dx%d)", size.getX(), size.getY()));
+                if (col >= level.getSize().getX()) {
+                    throw new InvalidBoardException(String.format("File is bigger than maxSize (%dx%d)", level.getSize().getX(), level.getSize().getY()));
                 }
 
                 fileMatrix[col][line] = oneLine.charAt(col);
@@ -170,6 +176,14 @@ public class Loader {
             line++;
         }
 
-        return createBoard(size, fileMatrix);
+        return fileMatrix;
+    }
+
+    public static Component loadBoard(LevelEnum level) throws FileNotFoundException, InvalidBoardException {
+        return createBoard(level, readFileMatrix(level));
+    }
+
+    public static Board loadBoard(LevelEnum level, Player player) throws InvalidBoardException, FileNotFoundException {
+        return createBoard(level, readFileMatrix(level), player);
     }
 }

@@ -31,6 +31,14 @@ public class Player extends MovingSprite {
         this.isMouthOpen = true;
     }
 
+    public Player(Player player, Coordinate coord) {
+        super(coord, new PlayerMovingStrategy(), null);
+        this.direction = null;
+        this.points = player.getPoints();
+        this.lives = player.getLives();
+        this.isMouthOpen = true;
+    }
+
     @Override
     public Image getImage() {
 

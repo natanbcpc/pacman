@@ -1,6 +1,5 @@
 package pacman;
 
-import pacman.models.Coordinate;
 import pacman.utils.loader.InvalidBoardException;
 import pacman.utils.loader.Loader;
 
@@ -14,7 +13,7 @@ public class PacmanGame extends JFrame {
 
     private void initWindow() {
         try {
-            add(Loader.loadBoard(new Coordinate(21, 21), "src/resources/levels/levelDesign01.txt"));
+            add(Loader.loadBoard(LevelEnum.LEVEL_1));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (InvalidBoardException e) {

@@ -1,5 +1,6 @@
 package pacman.models.board;
 
+import pacman.LevelEnum;
 import pacman.models.Coordinate;
 import pacman.models.ghost.Ghost;
 import pacman.models.player.Player;
@@ -7,12 +8,15 @@ import pacman.models.ball.Ball;
 import pacman.models.block.Block;
 import pacman.utils.ImageEnum;
 import pacman.utils.keyboardDirection.KeyboardAdapter;
+import pacman.utils.loader.InvalidBoardException;
+import pacman.utils.loader.Loader;
 
 import javax.swing.JPanel;
 import javax.swing.Timer;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +26,8 @@ public class Board extends JPanel implements ActionListener {
     private static final int B_HEIGHT = 368;
     private static final int SPRITE_SIZE = 16;
     private static final int POWER_UP_ROUNDS = 60;
+
+    private LevelEnum level;
 
     private boolean inGame;
     private boolean reset;
@@ -38,8 +44,9 @@ public class Board extends JPanel implements ActionListener {
     private KeyboardAdapter keyboardAdapter;
     private String endGameMessage;
 
-    public Board(Coordinate dimensions, Player player, List<Ghost> ghosts, List<Block> blocks, List<Ball> balls) {
-        this.dimensions = dimensions;
+    public Board(LevelEnum level, Player player, List<Ghost> ghosts, List<Block> blocks, List<Ball> balls) {
+        this.level = level;
+        this.dimensions = level.getSize();
         this.inGame = true;
         this.reset = false;
         this.powerUpRounds = 0;
@@ -49,6 +56,26 @@ public class Board extends JPanel implements ActionListener {
         this.balls = new ArrayList<>(balls);
         this.removeBalls = new ArrayList<>();
         initLevel();
+    }
+
+    private void nextBoard() throws FileNotFoundException, InvalidBoardException {
+        level = level.getNextLevel();
+
+        if (level == null) {
+            playerWin();
+        } else {
+            Board nextBoard = Loader.loadBoard(level, player);
+            this.dimensions = level.getSize();
+            this.inGame = true;
+            this.reset = false;
+            this.powerUpRounds = 0;
+            this.player = nextBoard.getPlayer();
+            this.ghosts = new ArrayList<>(nextBoard.getGhosts());
+            this.blocks = new ArrayList<>(nextBoard.getBlocks());
+            this.balls = new ArrayList<>(nextBoard.getBalls());
+            this.removeBalls = new ArrayList<>();
+            initLevel();
+        }
     }
 
     private void initLevel() {
@@ -153,7 +180,13 @@ public class Board extends JPanel implements ActionListener {
             checkCollisions();
 
             if (balls.isEmpty()) {
-                playerWin();
+                try {
+                    nextBoard();
+                } catch (InvalidBoardException e) {
+                    e.printStackTrace();
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
             }
         }
 
@@ -210,8 +243,20 @@ public class Board extends JPanel implements ActionListener {
         return player;
     }
 
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
+
     public List<Ghost> getGhosts() {
         return ghosts;
+    }
+
+    public List<Block> getBlocks() {
+        return blocks;
+    }
+
+    public List<Ball> getBalls() {
+        return balls;
     }
 
     public Coordinate getDimensions() {
