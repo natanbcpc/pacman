@@ -36,6 +36,7 @@ public class Board extends JPanel implements ActionListener {
     private List<Ball> removeBalls;
 
     private KeyboardAdapter keyboardAdapter;
+    private String endGameMessage;
 
     public Board(Coordinate dimensions, Player player, List<Ghost> ghosts, List<Block> blocks, List<Ball> balls) {
         this.dimensions = dimensions;
@@ -120,7 +121,7 @@ public class Board extends JPanel implements ActionListener {
 
             Toolkit.getDefaultToolkit().sync();
         } else {
-            drawCenteredString(g, "Game Over");
+            drawCenteredString(g, endGameMessage);
         }
         drawLives(g);
         drawPoints(g);
@@ -150,6 +151,10 @@ public class Board extends JPanel implements ActionListener {
                 g.move(this);
             }
             checkCollisions();
+
+            if (balls.isEmpty()) {
+                playerWin();
+            }
         }
 
         if (reset) {
@@ -223,6 +228,12 @@ public class Board extends JPanel implements ActionListener {
 
     public void gameOver() {
         inGame = false;
+        endGameMessage = "Game Over";
+    }
+
+    public void playerWin() {
+        inGame = false;
+        endGameMessage = "You Win!";
     }
 
     public void powerUp() {
