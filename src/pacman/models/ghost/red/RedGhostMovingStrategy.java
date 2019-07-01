@@ -3,9 +3,12 @@ package pacman.models.ghost.red;
 import pacman.models.Coordinate;
 import pacman.models.board.Board;
 import pacman.models.sprite.MovingStrategy;
+import pacman.utils.keyboardDirection.Direction;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
 
 public class RedGhostMovingStrategy extends MovingStrategy {
 
@@ -26,6 +29,7 @@ public class RedGhostMovingStrategy extends MovingStrategy {
         int upDistance = distance(upCoordinate, playerCoordinate);
         int downDistance = distance(downCoordinate, playerCoordinate);
 
+        //Adding distances
         ArrayList<Integer> values = new ArrayList<>();
         if(!board.hasWallOnCoordinate(leftCoordinate)) {
             values.add(leftDistance);

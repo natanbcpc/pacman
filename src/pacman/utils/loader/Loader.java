@@ -10,7 +10,7 @@ import pacman.models.ball.Ball;
 import pacman.models.block.Block;
 import pacman.models.ghost.blue.BlueGhost;
 import pacman.models.ghost.Ghost;
-import pacman.models.ghost.OrangeGhost;
+import pacman.models.ghost.orange.OrangeGhost;
 import pacman.models.ghost.pink.PinkGhost;
 import pacman.models.player.Player;
 import pacman.models.ball.special.SpecialBall;

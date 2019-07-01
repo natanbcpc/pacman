@@ -205,6 +205,10 @@ public class Board extends JPanel implements ActionListener {
         return player;
     }
 
+    public List<Ghost> getGhosts() {
+        return ghosts;
+    }
+
     public Coordinate getDimensions() {
         return dimensions;
     }
